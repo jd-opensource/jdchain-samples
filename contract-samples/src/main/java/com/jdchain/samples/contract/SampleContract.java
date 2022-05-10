@@ -170,4 +170,34 @@ public interface SampleContract {
     @ContractEvent(name = "modifyContractState")
     void modifyContractState(String contractAddress, String state);
 
+    /**
+     * 同态加法
+     *
+     * @param pubkey
+     * @param cipher1
+     * @param cipher2
+     * @return
+     */
+    @ContractEvent(name = "paillierAdd")
+    String paillierAdd(String pubkey, String cipher1, String cipher2);
+
+    /**
+     * 同态乘法
+     *
+     * @param pubkey
+     * @param cipher
+     * @param scalar
+     * @return
+     */
+    @ContractEvent(name = "paillierMul")
+    String paillierMul(String pubkey, String cipher, int scalar);
+
+    /**
+     * 秘密恢复
+     *
+     * @param partsArray
+     * @return
+     */
+    @ContractEvent(name = "secretRecover")
+    byte[] secretRecover(String partsArray);
 }

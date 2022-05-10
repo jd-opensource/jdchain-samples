@@ -2,27 +2,15 @@ package com.jdchain.samples.contract;
 
 import com.jd.blockchain.contract.ContractEventContext;
 import com.jd.blockchain.contract.EventProcessingAware;
-import com.jd.blockchain.crypto.AsymmetricKeypair;
-import com.jd.blockchain.crypto.Crypto;
-import com.jd.blockchain.crypto.CryptoAlgorithm;
-import com.jd.blockchain.crypto.KeyGenUtils;
-import com.jd.blockchain.crypto.PubKey;
-import com.jd.blockchain.crypto.SignatureFunction;
+import com.jd.blockchain.crypto.*;
 import com.jd.blockchain.crypto.base.DefaultCryptoEncoding;
 import com.jd.blockchain.crypto.service.classic.ClassicAlgorithm;
-import com.jd.blockchain.ledger.AccountState;
-import com.jd.blockchain.ledger.BlockchainIdentityData;
-import com.jd.blockchain.ledger.BlockchainKeypair;
-import com.jd.blockchain.ledger.BytesValue;
-import com.jd.blockchain.ledger.BytesValueList;
-import com.jd.blockchain.ledger.ContractCodeDeployOperation;
-import com.jd.blockchain.ledger.Event;
-import com.jd.blockchain.ledger.LedgerPermission;
-import com.jd.blockchain.ledger.TransactionPermission;
-import com.jd.blockchain.ledger.TypedKVEntry;
-import com.jd.blockchain.ledger.TypedValue;
+import com.jd.blockchain.ledger.*;
 import com.jd.blockchain.transaction.SimpleSecurityOperationBuilder;
 import utils.Bytes;
+import utils.codec.Base58Utils;
+import utils.crypto.adv.ShamirUtils;
+import utils.serialize.json.JSONSerializeUtils;
 
 /**
  * 合约样例实现
@@ -228,4 +216,25 @@ public class SampleContractImpl implements EventProcessingAware, SampleContract 
                 .state(accountState);
     }
 
+    @Override
+    public String paillierAdd(String pubkey, String cipher1, String cipher2) {
+        CryptoAlgorithm algorithm = Crypto.getAlgorithm("PAILLIER");
+        HomomorphicCryptoFunction homomorphicCryptoFunction = (HomomorphicCryptoFunction) Crypto.getCryptoFunction(algorithm);
+        byte[] add = homomorphicCryptoFunction.add(KeyGenUtils.decodePubKey(pubkey), Base58Utils.decode(cipher1), Base58Utils.decode(cipher2));
+        return Base58Utils.encode(add);
+    }
+
+    @Override
+    public String paillierMul(String pubkey, String cipher, int scalar) {
+        CryptoAlgorithm algorithm = Crypto.getAlgorithm("PAILLIER");
+        HomomorphicCryptoFunction homomorphicCryptoFunction = (HomomorphicCryptoFunction) Crypto.getCryptoFunction(algorithm);
+        byte[] mul = homomorphicCryptoFunction.multiply(KeyGenUtils.decodePubKey(pubkey), Base58Utils.decode(cipher), scalar);
+        return Base58Utils.encode(mul);
+    }
+
+    @Override
+    public byte[] secretRecover(String partsArray) {
+        String[] parts = eventContext.jsonDeserializeFromJSON(partsArray, String[].class);
+        return ShamirUtils.recover(parts);
+    }
 }
