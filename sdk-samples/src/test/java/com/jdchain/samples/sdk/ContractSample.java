@@ -38,7 +38,7 @@ public class ContractSample extends SampleBase {
         BlockchainKeypair contractAccount = BlockchainKeyGenerator.getInstance().generate();
         System.out.println("合约地址：" + contractAccount.getAddress());
         // 部署合约
-        txTemp.contracts().deploy(contractAccount.getIdentity(), FileUtils.readBytes("src/test/resources/contract-samples-1.6.4.RELEASE.car"));
+        txTemp.contracts().deploy(contractAccount.getIdentity(), FileUtils.readBytes("src/test/resources/contract-samples-1.6.5.RELEASE.car"));
         // 准备交易
         PreparedTransaction ptx = txTemp.prepare();
         // 提交交易
@@ -59,7 +59,7 @@ public class ContractSample extends SampleBase {
         BlockchainIdentity contractIdentity = new BlockchainIdentityData(KeyGenUtils.decodePubKey("7VeRL4K4bLP5Jodt748dEnfe2UrqfNLQAWnBzMDoRt25KYnr"));
         System.out.println("合约地址：" + contractIdentity.getAddress());
         // 部署合约
-        txTemp.contracts().deploy(contractIdentity, FileUtils.readBytes("src/test/resources/contract-samples-1.6.4.RELEASE.car"));
+        txTemp.contracts().deploy(contractIdentity, FileUtils.readBytes("src/test/resources/contract-samples-1.6.5.RELEASE.car"));
         // 准备交易
         PreparedTransaction ptx = txTemp.prepare();
         // 提交交易

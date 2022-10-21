@@ -2,6 +2,13 @@
 
 本项目为`JD Chain SDK`的使用样例，开发者可以参考此项目快速上手`JD Chain SDK`，主要包括[交易发送查询](#交易发送查询)，[合约开发部署](#合约开发部署)两部分。
 
+> 请将依赖修改为与连接的JD Chain网络对应的版本
+```xml
+<properties>
+    <framework.version>1.6.5.RELEASE</framework.version>
+</properties>
+```
+
 ### 交易发送查询
 
 相关代码放在[sdk-sample](sdk-samples/src)下。
